@@ -6,18 +6,26 @@
 #include <QLabel>
 #include <cmath>
 #include <QPainter>
+#include <QTabWidget>
 
 int main(int argc, char *argv[]) {
 
     double num;
     int op = 0;
+    bool issto = false;
 
     QApplication app(argc, argv);
 
     QWidget window;
     window.setWindowTitle("MintCalc");
-    window.resize(480, 830);
+    window.setMaximumSize(480, 1000);
+    window.resize(480, 1000);
     window.show();
+
+    QTabWidget tabs;
+
+    QWidget calcTab;
+    QWidget convTab;
 
     QLabel screen;
     screen.setText("0");
@@ -223,7 +231,10 @@ int main(int argc, char *argv[]) {
     QObject::connect(&pi, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("3.141592653");
+        } else {
+            screen.setText(QString::number(screen.text().toDouble() * std::numbers::pi));
         }
+
     });
 
     QPushButton openp;
@@ -269,47 +280,66 @@ int main(int argc, char *argv[]) {
         screen.setText("0");
     });
 
-    QPushButton calc;
-    calc.setText("x");
-    calc.setFixedSize(40, 55);
+    QPushButton log10;
+    log10.setText("log(x)");
+    log10.setFixedSize(110, 110);
+    QObject::connect(&log10, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::log10(screen.text().toDouble())));
+    });
 
-    QPushButton conv;
-    conv.setText("⇄");
-    conv.setFixedSize(40, 55);
+    QPushButton ln;
+    ln.setText("ln(x)");
+    ln.setFixedSize(110, 110);
+    QObject::connect(&ln, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::log(screen.text().toDouble())));
+    });
 
-    QGridLayout layout;
-    layout.addWidget(&zero, 7, 1, 1, 2);
-    layout.addWidget(&dot, 7, 3, 1, 1);
-    layout.addWidget(&equals, 7, 4, 1, 1);
-    layout.addWidget(&one, 6, 1, 1, 1);
-    layout.addWidget(&two, 6, 2, 1, 1);
-    layout.addWidget(&three, 6, 3, 1, 1);
-    layout.addWidget(&plus, 6, 4, 1, 1);
-    layout.addWidget(&four, 5, 1, 1, 1);
-    layout.addWidget(&five, 5, 2, 1, 1);
-    layout.addWidget(&six, 5, 3, 1, 1);
-    layout.addWidget(&minus, 5, 4, 1, 1);
-    layout.addWidget(&seven, 4, 1, 1, 1);
-    layout.addWidget(&eight, 4, 2, 1, 1);
-    layout.addWidget(&nine, 4, 3, 1, 1);
-    layout.addWidget(&times, 4, 4, 1, 1);
-    layout.addWidget(&pi, 3, 1, 1, 1);
-    layout.addWidget(&openp, 3, 2, 1, 1);
-    layout.addWidget(&closep, 3, 3, 1, 1);
-    layout.addWidget(&divide, 3, 4, 1, 1);
-    layout.addWidget(&sqrt, 2, 1, 1, 1);
-    layout.addWidget(&square, 2, 2, 1, 1);
-    layout.addWidget(&exp, 2, 3, 1, 1);
-    layout.addWidget(&delall, 2, 4, 1, 1);
-    layout.addWidget(&screen, 0, 1, 2, 4);
-    layout.addWidget(&calc, 0, 0, 1, 1);
-    layout.addWidget(&conv, 1, 0, 1, 1);
-    window.setLayout(&layout);
+    QPushButton sto;
+    sto.setText("->");
+    sto.setFixedSize(110, 110);
+
+    QPushButton var;
+    var.setText("var");
+    var.setFixedSize(110, 110);
+
+    QGridLayout calcLayout(&calcTab);
+    calcLayout.addWidget(&zero, 7, 1, 1, 2);
+    calcLayout.addWidget(&dot, 7, 3, 1, 1);
+    calcLayout.addWidget(&equals, 7, 4, 1, 1);
+    calcLayout.addWidget(&one, 6, 1, 1, 1);
+    calcLayout.addWidget(&two, 6, 2, 1, 1);
+    calcLayout.addWidget(&three, 6, 3, 1, 1);
+    calcLayout.addWidget(&plus, 6, 4, 1, 1);
+    calcLayout.addWidget(&four, 5, 1, 1, 1);
+    calcLayout.addWidget(&five, 5, 2, 1, 1);
+    calcLayout.addWidget(&six, 5, 3, 1, 1);
+    calcLayout.addWidget(&minus, 5, 4, 1, 1);
+    calcLayout.addWidget(&seven, 4, 1, 1, 1);
+    calcLayout.addWidget(&eight, 4, 2, 1, 1);
+    calcLayout.addWidget(&nine, 4, 3, 1, 1);
+    calcLayout.addWidget(&times, 4, 4, 1, 1);
+    calcLayout.addWidget(&pi, 3, 1, 1, 1);
+    calcLayout.addWidget(&openp, 3, 2, 1, 1);
+    calcLayout.addWidget(&closep, 3, 3, 1, 1);
+    calcLayout.addWidget(&divide, 3, 4, 1, 1);
+    calcLayout.addWidget(&sqrt, 2, 1, 1, 1);
+    calcLayout.addWidget(&square, 2, 2, 1, 1);
+    calcLayout.addWidget(&exp, 2, 3, 1, 1);
+    calcLayout.addWidget(&delall, 2, 4, 1, 1);
+    calcLayout.addWidget(&log10, 1, 1, 1, 1);
+    calcLayout.addWidget(&ln, 1, 2, 1, 1);
+    calcLayout.addWidget(&sto, 1, 3, 1, 1);
+    calcLayout.addWidget(&var, 1, 4, 1, 1);
+    calcLayout.addWidget(&screen, 0, 1, 1, 4);
+    tabs.addTab(&calcTab, "Calculator");
+
+    QVBoxLayout mainLayout(&window);
+    mainLayout.addWidget(&tabs);
 
     QPushButton* defButtons[] = {
         &zero, &one, &two, &three, &four, &five,
         &six, &seven, &eight, &nine, &dot, &pi,
-        &openp, &closep, &sqrt, &square, &exp
+        &openp, &closep, &sqrt, &square, &exp, &log10, &ln, &sto, &var
     };
 
     QPushButton* opButtons[] = {
@@ -322,7 +352,7 @@ int main(int argc, char *argv[]) {
             "    background-color: #363636;"
             "    color: white;"
             "    font-size: 24px;"
-            "    border-radius: 30px;"
+            "    border-radius: 55px;"
             "}"
             "QPushButton:hover {"
             "    background-color: #4a4a4a;"
@@ -339,7 +369,7 @@ int main(int argc, char *argv[]) {
             "    background-color: #00afff;"
             "    color: black;"
             "    font-size: 24px;"
-            "    border-radius: 30px;"
+            "    border-radius: 55px;"
             "}"
             "QPushButton:hover {"
             "    background-color: #33bfff;"
@@ -358,7 +388,7 @@ int main(int argc, char *argv[]) {
         "    background-color: #00e5bb;"
         "    color: black;"
         "    font-size: 24px;"
-        "    border-radius: 30px;"
+        "    border-radius: 55px;"
         "}"
         "#equalsButton:hover {"
         "    background-color: #33eac7;"
