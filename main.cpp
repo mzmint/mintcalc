@@ -13,6 +13,14 @@ int main(int argc, char *argv[]) {
     double num;
     int op = 0;
     bool issto = false;
+    bool isvar = false;
+    double va = 0;
+    double vb = 0;
+    double vc = 0;
+    double vd = 0;
+    double ve = 0;
+    double vf = 0;
+
 
     QApplication app(argc, argv);
 
@@ -148,35 +156,14 @@ int main(int argc, char *argv[]) {
     QPushButton four;
     four.setText("4");
     four.setFixedSize(110, 110);
-    QObject::connect(&four, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("4");
-        } else {
-            screen.setText(screen.text() + "4");
-        }
-    });
 
     QPushButton five;
     five.setText("5");
     five.setFixedSize(110, 110);
-    QObject::connect(&five, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("5");
-        } else {
-            screen.setText(screen.text() + "5");
-        }
-    });
 
     QPushButton six;
     six.setText("6");
     six.setFixedSize(110, 110);
-    QObject::connect(&six, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("6");
-        } else {
-            screen.setText(screen.text() + "6");
-        }
-    });
 
     QPushButton minus;
     minus.setText("-");
@@ -188,34 +175,189 @@ int main(int argc, char *argv[]) {
     QPushButton seven;
     seven.setText("7");
     seven.setFixedSize(110, 110);
-    QObject::connect(&seven, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("7");
-        } else {
-            screen.setText(screen.text() + "7");
-        }
-    });
 
     QPushButton eight;
     eight.setText("8");
     eight.setFixedSize(110, 110);
-    QObject::connect(&eight, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("8");
-        } else {
-            screen.setText(screen.text() + "8");
-        }
-    });
 
     QPushButton nine;
     nine.setText("9");
     nine.setFixedSize(110, 110);
-    QObject::connect(&nine, &QPushButton::clicked, [&]() {
-        if (screen.text() == "0") {
-            screen.setText("9");
-        } else {
-            screen.setText(screen.text() + "9");
+
+    QObject::connect(&seven, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            va = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
         }
+
+        if (isvar) {
+            screen.setText(QString::number(va));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("7");
+        else
+            screen.setText(screen.text() + "7");
+    });
+
+    QObject::connect(&eight, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            vb = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
+        }
+
+        if (isvar) {
+            screen.setText(QString::number(vb));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("8");
+        else
+            screen.setText(screen.text() + "8");
+    });
+
+    QObject::connect(&nine, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            vc = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
+        }
+
+        if (isvar) {
+            screen.setText(QString::number(vc));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("9");
+        else
+            screen.setText(screen.text() + "9");
+    });
+
+
+    QObject::connect(&four, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            vd = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
+        }
+
+        if (isvar) {
+            screen.setText(QString::number(vd));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("4");
+        else
+            screen.setText(screen.text() + "4");
+    });
+
+    QObject::connect(&five, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            ve = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
+        }
+
+        if (isvar) {
+            screen.setText(QString::number(ve));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("5");
+        else
+            screen.setText(screen.text() + "5");
+    });
+
+
+    QObject::connect(&six, &QPushButton::clicked, [&]() {
+
+        if (issto) {
+            vf = screen.text().toDouble();
+
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+
+            issto = false;
+            isvar = false;
+
+            return;
+        }
+
+        if (isvar) {
+            screen.setText(QString::number(vf));
+            return;
+        }
+
+        if (screen.text() == "0")
+            screen.setText("6");
+        else
+            screen.setText(screen.text() + "6");
     });
 
     QPushButton times;
@@ -297,10 +439,52 @@ int main(int argc, char *argv[]) {
     QPushButton sto;
     sto.setText("->");
     sto.setFixedSize(110, 110);
+    QObject::connect(&sto, &QPushButton::clicked, [&]() {
+        if (issto == false) {
+            seven.setText("A");
+            eight.setText("B");
+            nine.setText("C");
+            four.setText("D");
+            five.setText("E");
+            six.setText("F");
+            issto = !issto;
+        } else {
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+            issto = !issto;
+        }
+        isvar = false;
+    });
 
     QPushButton var;
     var.setText("var");
     var.setFixedSize(110, 110);
+    QObject::connect(&var, &QPushButton::clicked, [&]() {
+        if (isvar == false) {
+            seven.setText("A");
+            eight.setText("B");
+            nine.setText("C");
+            four.setText("D");
+            five.setText("E");
+            six.setText("F");
+            isvar = !isvar;
+        } else {
+            seven.setText("7");
+            eight.setText("8");
+            nine.setText("9");
+            four.setText("4");
+            five.setText("5");
+            six.setText("6");
+            isvar = !isvar;
+        }
+        issto = false;
+    });
+
+
 
     QGridLayout calcLayout(&calcTab);
     calcLayout.addWidget(&zero, 7, 1, 1, 2);
