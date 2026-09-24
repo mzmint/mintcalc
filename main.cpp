@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     QTabWidget tabs;
 
     QWidget calcTab;
-    QWidget convTab;
+    QWidget memTab;
 
     QLabel screen;
     screen.setText("0");
@@ -71,6 +71,25 @@ int main(int argc, char *argv[]) {
         op = newOp;
         screen.setText("0");
     };
+
+    QLabel albl;
+    albl.setText("A = 0");
+    QLabel blbl;
+    blbl.setText("B = 0");
+    QLabel clbl;
+    clbl.setText("C = 0");
+    QLabel dlbl;
+    dlbl.setText("D = 0");
+    QLabel elbl;
+    elbl.setText("E = 0");
+    QLabel flbl;
+    flbl.setText("F = 0");
+    albl.setFixedHeight(50);
+    blbl.setFixedHeight(50);
+    clbl.setFixedHeight(50);
+    dlbl.setFixedHeight(50);
+    elbl.setFixedHeight(50);
+    flbl.setFixedHeight(50);
 
     QPushButton zero;
     zero.setText("0");
@@ -188,6 +207,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             va = screen.text().toDouble();
+            albl.setText("A = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -217,6 +237,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             vb = screen.text().toDouble();
+            blbl.setText("B = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -246,6 +267,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             vc = screen.text().toDouble();
+            clbl.setText("C = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -276,6 +298,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             vd = screen.text().toDouble();
+            dlbl.setText("D = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -305,6 +328,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             ve = screen.text().toDouble();
+            elbl.setText("E = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -335,6 +359,7 @@ int main(int argc, char *argv[]) {
 
         if (issto) {
             vf = screen.text().toDouble();
+            flbl.setText("F = " + screen.text());
 
             seven.setText("7");
             eight.setText("8");
@@ -484,9 +509,10 @@ int main(int argc, char *argv[]) {
         issto = false;
     });
 
-
-
     QGridLayout calcLayout(&calcTab);
+    QVBoxLayout memLayout(&memTab);
+    memLayout.setSpacing(2);
+    memLayout.setContentsMargins(5, 5, 5, 5);
     calcLayout.addWidget(&zero, 7, 1, 1, 2);
     calcLayout.addWidget(&dot, 7, 3, 1, 1);
     calcLayout.addWidget(&equals, 7, 4, 1, 1);
@@ -515,7 +541,16 @@ int main(int argc, char *argv[]) {
     calcLayout.addWidget(&sto, 1, 3, 1, 1);
     calcLayout.addWidget(&var, 1, 4, 1, 1);
     calcLayout.addWidget(&screen, 0, 1, 1, 4);
+    memLayout.addWidget(&albl);
+    memLayout.addWidget(&blbl);
+    memLayout.addWidget(&clbl);
+    memLayout.addWidget(&dlbl);
+    memLayout.addWidget(&elbl);
+    memLayout.addWidget(&flbl);
+    memLayout.addStretch();
     tabs.addTab(&calcTab, "Calculator");
+    tabs.addTab(&memTab, "Memory");
+
 
     QVBoxLayout mainLayout(&window);
     mainLayout.addWidget(&tabs);
@@ -523,12 +558,25 @@ int main(int argc, char *argv[]) {
     QPushButton* defButtons[] = {
         &zero, &one, &two, &three, &four, &five,
         &six, &seven, &eight, &nine, &dot, &pi,
-        &openp, &closep, &sqrt, &square, &exp, &log10, &ln, &sto, &var
+        &openp, &closep, &sqrt, &square, &exp,
+        &log10, &ln, &sto, &var
     };
 
     QPushButton* opButtons[] = {
         &delall, &divide, &times, &plus, &minus
     };
+
+    QLabel* memLbl[] = {
+        &albl, &blbl, &clbl, &dlbl, &elbl, &flbl
+    };
+
+    for (QLabel* label : memLbl) {
+        label->setStyleSheet(
+            "QLabel {"
+            "    font-size: 32px;"
+            "}"
+        );
+    }
 
     for (QPushButton* button : defButtons) {
         button->setStyleSheet(
