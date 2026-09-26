@@ -7,6 +7,10 @@
 #include <cmath>
 #include <QPainter>
 #include <QTabWidget>
+#include <QDebug>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QLineEdit>
 
 int main(int argc, char *argv[]) {
 
@@ -20,7 +24,8 @@ int main(int argc, char *argv[]) {
     double vd = 0;
     double ve = 0;
     double vf = 0;
-
+    QString c1i = "Decimal";
+    QString c2i = "Decimal";
 
     QApplication app(argc, argv);
 
@@ -34,6 +39,7 @@ int main(int argc, char *argv[]) {
 
     QWidget calcTab;
     QWidget memTab;
+    QWidget convTab;
 
     QLabel screen;
     screen.setText("0");
@@ -509,8 +515,51 @@ int main(int argc, char *argv[]) {
         issto = false;
     });
 
+    QLineEdit conva;
+    conva.setPlaceholderText("Number:");
+
+    QLabel ares;
+    ares.setText("");
+
+    QComboBox c1;
+    c1.addItem("Decimal");
+    c1.addItem("Binary");
+    c1.addItem("Hexadecimal");
+    QObject::connect(&c1, &QComboBox::currentIndexChanged, [&](int index) {
+        c1i = c1.itemText(index);
+    });
+
+    QComboBox c2;
+    c2.addItem("Decimal");
+    c2.addItem("Binary");
+    c2.addItem("Hexadecimal");
+    QObject::connect(&c2, &QComboBox::currentIndexChanged, [&](int index) {
+        c2i = c2.itemText(index);
+    });
+
+    QPushButton convert1;
+    convert1.setText("Convert");
+    QObject::connect(&convert1, &QPushButton::clicked, [&]() {
+        if (c1i == c2i) {
+            ares.setText(conva.text());
+        } else if (c1i == "Decimal" && c2i == "Binary") {
+            ares.setText(QString::number(conva.text().toInt(), 2));
+        } else if (c1i == "Decimal" && c2i == "Hexadecimal") {
+            ares.setText(QString::number(conva.text().toInt(), 16));
+        } else if (c1i == "Binary" && c2i == "Decimal") {
+            ares.setText(QString::number(conva.text().toInt(nullptr, 2)));
+        } else if (c1i == "Binary" && c2i == "Hexadecimal") {
+            ares.setText(QString::number(conva.text().toInt(nullptr, 2), 16));
+        } else if (c1i == "Hexadecimal" && c2i == "Decimal") {
+            ares.setText(QString::number(conva.text().toInt(nullptr, 16)));
+        } else if (c1i == "Hexadecimal" && c2i == "Binary") {
+            ares.setText(QString::number(conva.text().toInt(nullptr, 16), 2));
+        }
+    });
+
     QGridLayout calcLayout(&calcTab);
     QVBoxLayout memLayout(&memTab);
+    QGridLayout convLayout(&convTab);
     memLayout.setSpacing(2);
     memLayout.setContentsMargins(5, 5, 5, 5);
     calcLayout.addWidget(&zero, 7, 1, 1, 2);
@@ -548,8 +597,15 @@ int main(int argc, char *argv[]) {
     memLayout.addWidget(&elbl);
     memLayout.addWidget(&flbl);
     memLayout.addStretch();
+    convLayout.addWidget(&c1, 0, 0);
+    convLayout.addWidget(&conva, 0, 1);
+    convLayout.addWidget(&c2, 1, 0);
+    convLayout.addWidget(&ares, 1, 1);
+    convLayout.addWidget(&convert1, 0, 2);
+    convLayout.setAlignment(Qt::AlignTop);
     tabs.addTab(&calcTab, "Calculator");
     tabs.addTab(&memTab, "Memory");
+    tabs.addTab(&convTab, "Convert");
 
 
     QVBoxLayout mainLayout(&window);
@@ -632,6 +688,9 @@ int main(int argc, char *argv[]) {
         "    font-size: 32px"
         "}"
     );
+
+    ares.setStyleSheet("QLabel { border: 1px solid white; "
+                       "border-radius: 5px}");
 
     return app.exec();
 }
