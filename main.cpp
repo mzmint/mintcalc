@@ -12,6 +12,14 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 
+int factorial(double n) {
+    int ans = 1;
+    for (int i = 2; i <= n; i++) {
+        ans = ans * i;
+    }
+    return ans;
+}
+
 int main(int argc, char *argv[]) {
 
     double num;
@@ -410,13 +418,19 @@ int main(int argc, char *argv[]) {
 
     });
 
-    QPushButton openp;
-    openp.setText("(");
-    openp.setFixedSize(110, 110);
+    QPushButton recip;
+    recip.setText("1/x");
+    recip.setFixedSize(110, 110);
+    QObject::connect(&recip, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(1.0 / screen.text().toDouble()));
+    });
 
-    QPushButton closep;
-    closep.setText(")");
-    closep.setFixedSize(110, 110);
+    QPushButton fact;
+    fact.setText("!");
+    fact.setFixedSize(110, 110);
+    QObject::connect(&fact, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(factorial(screen.text().toDouble())));
+    });
 
     QPushButton divide;
     divide.setText("/");
@@ -578,8 +592,8 @@ int main(int argc, char *argv[]) {
     calcLayout.addWidget(&nine, 4, 3, 1, 1);
     calcLayout.addWidget(&times, 4, 4, 1, 1);
     calcLayout.addWidget(&pi, 3, 1, 1, 1);
-    calcLayout.addWidget(&openp, 3, 2, 1, 1);
-    calcLayout.addWidget(&closep, 3, 3, 1, 1);
+    calcLayout.addWidget(&recip, 3, 2, 1, 1);
+    calcLayout.addWidget(&fact, 3, 3, 1, 1);
     calcLayout.addWidget(&divide, 3, 4, 1, 1);
     calcLayout.addWidget(&sqrt, 2, 1, 1, 1);
     calcLayout.addWidget(&square, 2, 2, 1, 1);
@@ -614,7 +628,7 @@ int main(int argc, char *argv[]) {
     QPushButton* defButtons[] = {
         &zero, &one, &two, &three, &four, &five,
         &six, &seven, &eight, &nine, &dot, &pi,
-        &openp, &closep, &sqrt, &square, &exp,
+        &recip, &fact, &sqrt, &square, &exp,
         &log10, &ln, &sto, &var
     };
 
@@ -685,7 +699,7 @@ int main(int argc, char *argv[]) {
         "    background-color: #66efd3;"
         "}"
         "#screenLbl {"
-        "    font-size: 32px"
+        "    font-size: 48px"
         "}"
     );
 
