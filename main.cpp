@@ -11,6 +11,9 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 int factorial(double n) {
     int ans = 1;
@@ -21,6 +24,7 @@ int factorial(double n) {
 }
 
 int main(int argc, char *argv[]) {
+    std::srand(std::time(nullptr));
 
     double num;
     int op = 0;
@@ -48,6 +52,7 @@ int main(int argc, char *argv[]) {
     QWidget calcTab;
     QWidget memTab;
     QWidget convTab;
+    QWidget probTab;
 
     QLabel screen;
     screen.setText("0");
@@ -571,9 +576,28 @@ int main(int argc, char *argv[]) {
         }
     });
 
+    QLabel cftext;
+    cftext.setText("Coin Flip");
+
+    QLabel cfr;
+    cfr.setText("Flip a coin");
+
+    QPushButton cflip;
+    cflip.setText("Flip");
+    QObject::connect(&cflip, &QPushButton::clicked, [&]() {
+        int rnum = std::rand() % 2;
+        std::cout << rnum;
+        if (rnum == 0) {
+            cfr.setText("Heads!");
+        } else {
+            cfr.setText("Tails!");
+        }
+    });
+
     QGridLayout calcLayout(&calcTab);
     QVBoxLayout memLayout(&memTab);
     QGridLayout convLayout(&convTab);
+    QGridLayout probLayout(&probTab);
     memLayout.setSpacing(2);
     memLayout.setContentsMargins(5, 5, 5, 5);
     calcLayout.addWidget(&zero, 7, 1, 1, 2);
@@ -617,9 +641,14 @@ int main(int argc, char *argv[]) {
     convLayout.addWidget(&ares, 1, 1);
     convLayout.addWidget(&convert1, 0, 2);
     convLayout.setAlignment(Qt::AlignTop);
+    probLayout.addWidget(&cftext, 0, 0, 1, 2);
+    probLayout.addWidget(&cflip, 1, 0);
+    probLayout.addWidget(&cfr, 1, 1);
+    probLayout.setAlignment(Qt::AlignTop);
     tabs.addTab(&calcTab, "Calculator");
     tabs.addTab(&memTab, "Memory");
     tabs.addTab(&convTab, "Convert");
+    tabs.addTab(&probTab, "Probability");
 
 
     QVBoxLayout mainLayout(&window);
