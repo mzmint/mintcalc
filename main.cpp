@@ -38,6 +38,8 @@ int main(int argc, char *argv[]) {
     double vf = 0;
     QString c1i = "Decimal";
     QString c2i = "Decimal";
+    QString c3i = "Meters";
+    QString c4i = "Feet";
 
     QApplication app(argc, argv);
 
@@ -576,6 +578,42 @@ int main(int argc, char *argv[]) {
         }
     });
 
+    QLineEdit convb;
+    convb.setPlaceholderText("Number:");
+
+    QLabel bres;
+    bres.setText("");
+
+    QComboBox c3;
+    c3.addItem("Meters");
+    c3.addItem("Centimeters");
+    QObject::connect(&c3, &QComboBox::currentIndexChanged, [&](int index) {
+        c3i = c3.itemText(index);
+    });
+
+    QComboBox c4;
+    c4.addItem("Feet");
+    c4.addItem("Inches");
+    QObject::connect(&c4, &QComboBox::currentIndexChanged, [&](int index) {
+        c4i = c4.itemText(index);
+    });
+
+    QPushButton convert2;
+    convert2.setText("Convert");
+    QObject::connect(&convert2, &QPushButton::clicked, [&]() {
+        if (c3i == c4i) {
+            bres.setText(convb.text());
+        } else if (c3i == "Meters" && c4i == "Feet") {
+            bres.setText(QString::number(convb.text().toDouble() * 3.28084));
+        } else if (c3i == "Meters" && c4i == "Inches") {
+            bres.setText(QString::number(convb.text().toDouble() * 39.3701));
+        } else if (c3i == "Centimeters" && c4i == "Feet") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0328084));
+        } else if (c3i == "Centimeters" && c4i == "Inches") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.393701));
+        }
+    });
+
     QLabel cftext;
     cftext.setText("Coin Flip");
 
@@ -640,6 +678,11 @@ int main(int argc, char *argv[]) {
     convLayout.addWidget(&c2, 1, 0);
     convLayout.addWidget(&ares, 1, 1);
     convLayout.addWidget(&convert1, 0, 2);
+    convLayout.addWidget(&c3, 2, 0);
+    convLayout.addWidget(&convb, 2, 1);
+    convLayout.addWidget(&c4, 3, 0);
+    convLayout.addWidget(&bres, 3, 1);
+    convLayout.addWidget(&convert2, 2, 2);
     convLayout.setAlignment(Qt::AlignTop);
     probLayout.addWidget(&cftext, 0, 0, 1, 2);
     probLayout.addWidget(&cflip, 1, 0);
@@ -667,6 +710,10 @@ int main(int argc, char *argv[]) {
 
     QLabel* memLbl[] = {
         &albl, &blbl, &clbl, &dlbl, &elbl, &flbl
+    };
+
+    QLabel* convLbl[] = {
+        &ares, &bres
     };
 
     for (QLabel* label : memLbl) {
@@ -732,8 +779,12 @@ int main(int argc, char *argv[]) {
         "}"
     );
 
-    ares.setStyleSheet("QLabel { border: 1px solid white; "
-                       "border-radius: 5px}");
+    for (QLabel* label : convLbl) {
+        label->setStyleSheet(
+            "QLabel { border: 1px solid white; "
+                "border-radius: 5px}"
+        );
+    }
 
     return app.exec();
 }
