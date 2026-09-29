@@ -587,11 +587,15 @@ int main(int argc, char *argv[]) {
     QComboBox c3;
     c3.addItem("Meters");
     c3.addItem("Centimeters");
+    c3.addItem("Feet");
+    c3.addItem("Inches");
     QObject::connect(&c3, &QComboBox::currentIndexChanged, [&](int index) {
         c3i = c3.itemText(index);
     });
 
     QComboBox c4;
+    c4.addItem("Meters");
+    c4.addItem("Centimeters");
     c4.addItem("Feet");
     c4.addItem("Inches");
     QObject::connect(&c4, &QComboBox::currentIndexChanged, [&](int index) {
@@ -607,10 +611,26 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 3.28084));
         } else if (c3i == "Meters" && c4i == "Inches") {
             bres.setText(QString::number(convb.text().toDouble() * 39.3701));
+        } else if (c3i == "Meters" && c4i == "Centimeters") {
+            bres.setText(QString::number(convb.text().toDouble() * 100));
         } else if (c3i == "Centimeters" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() * 0.0328084));
         } else if (c3i == "Centimeters" && c4i == "Inches") {
             bres.setText(QString::number(convb.text().toDouble() * 0.393701));
+        } else if (c3i == "Centimeters" && c4i == "Meters") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.01));
+        } else if (c3i == "Feet" && c4i == "Meters") {
+            bres.setText(QString::number(convb.text().toDouble() / 3.28084));
+        } else if (c3i == "Feet" && c4i == "Inches") {
+            bres.setText(QString::number(convb.text().toDouble() * 12));
+        } else if (c3i == "Feet" && c4i == "Centimeters") {
+            bres.setText(QString::number(convb.text().toDouble() * 30.48));
+        } else if (c3i == "Inches" && c4i == "Feet") {
+            bres.setText(QString::number(convb.text().toDouble() / 12));
+        } else if (c3i == "Inches" && c4i == "Centimeters") {
+            bres.setText(QString::number(convb.text().toDouble() * 2.54));
+        } else if (c3i == "Inches" && c4i == "Meters") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0254));
         }
     });
 
