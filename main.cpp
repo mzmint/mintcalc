@@ -39,7 +39,9 @@ int main(int argc, char *argv[]) {
     QString c1i = "Decimal";
     QString c2i = "Decimal";
     QString c3i = "Meters";
-    QString c4i = "Feet";
+    QString c4i = "Meters";
+    QString c5i = "Kilograms";
+    QString c6i = "Kilograms";
 
     QApplication app(argc, argv);
 
@@ -587,6 +589,7 @@ int main(int argc, char *argv[]) {
     QComboBox c3;
     c3.addItem("Meters");
     c3.addItem("Centimeters");
+    c3.addItem("Kilometers");
     c3.addItem("Feet");
     c3.addItem("Inches");
     QObject::connect(&c3, &QComboBox::currentIndexChanged, [&](int index) {
@@ -596,6 +599,7 @@ int main(int argc, char *argv[]) {
     QComboBox c4;
     c4.addItem("Meters");
     c4.addItem("Centimeters");
+    c4.addItem("Kilometers");
     c4.addItem("Feet");
     c4.addItem("Inches");
     QObject::connect(&c4, &QComboBox::currentIndexChanged, [&](int index) {
@@ -613,24 +617,82 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 39.3701));
         } else if (c3i == "Meters" && c4i == "Centimeters") {
             bres.setText(QString::number(convb.text().toDouble() * 100));
+        } else if (c3i == "Meters" && c4i == "Kilometers") {
+            bres.setText(QString::number(convb.text().toDouble() / 1000));
         } else if (c3i == "Centimeters" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() * 0.0328084));
         } else if (c3i == "Centimeters" && c4i == "Inches") {
             bres.setText(QString::number(convb.text().toDouble() * 0.393701));
         } else if (c3i == "Centimeters" && c4i == "Meters") {
             bres.setText(QString::number(convb.text().toDouble() * 0.01));
+        } else if (c3i == "Centimeters" && c4i == "Kilometers") {
+            bres.setText(QString::number(convb.text().toDouble() / 100000));
         } else if (c3i == "Feet" && c4i == "Meters") {
             bres.setText(QString::number(convb.text().toDouble() / 3.28084));
         } else if (c3i == "Feet" && c4i == "Inches") {
             bres.setText(QString::number(convb.text().toDouble() * 12));
         } else if (c3i == "Feet" && c4i == "Centimeters") {
             bres.setText(QString::number(convb.text().toDouble() * 30.48));
+        } else if (c3i == "Feet" && c4i == "Kilometers") {
+            bres.setText(QString::number(convb.text().toDouble() / 3280.84));
         } else if (c3i == "Inches" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() / 12));
         } else if (c3i == "Inches" && c4i == "Centimeters") {
             bres.setText(QString::number(convb.text().toDouble() * 2.54));
         } else if (c3i == "Inches" && c4i == "Meters") {
             bres.setText(QString::number(convb.text().toDouble() * 0.0254));
+        } else if (c3i == "Inches" && c4i == "Kilometers") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0000254));
+        } else if (c3i == "Kilometers" && c4i == "Feet") {
+            bres.setText(QString::number(convb.text().toDouble() * 3280.84));
+        } else if (c3i == "Kilometers" && c4i == "Centimeters") {
+            bres.setText(QString::number(convb.text().toDouble() * 100000));
+        } else if (c3i == "Kilometers" && c4i == "Meters") {
+            bres.setText(QString::number(convb.text().toDouble() * 1000));
+        } else if (c3i == "Kilometers" && c4i == "Inches") {
+            bres.setText(QString::number(convb.text().toDouble() * 39370.1));
+        }
+    });
+
+    QLineEdit convc;
+    convc.setPlaceholderText("Number:");
+
+    QLabel cres;
+    cres.setText("");
+
+    QComboBox c5;
+    c5.addItem("Kilograms");
+    c5.addItem("Grams");
+    c5.addItem("Pounds");
+    QObject::connect(&c5, &QComboBox::currentIndexChanged, [&](int index) {
+        c5i = c5.itemText(index);
+    });
+
+    QComboBox c6;
+    c6.addItem("Kilograms");
+    c6.addItem("Grams");
+    c6.addItem("Pounds");
+    QObject::connect(&c6, &QComboBox::currentIndexChanged, [&](int index) {
+        c6i = c6.itemText(index);
+    });
+
+    QPushButton convert3;
+    convert3.setText("Convert");
+    QObject::connect(&convert3, &QPushButton::clicked, [&]() {
+        if (c5i == c6i) {
+            cres.setText(convc.text());
+        } else if (c5i == "Kilograms" && c6i == "Grams") {
+            cres.setText(QString::number(convc.text().toDouble() * 1000));
+        } else if (c5i == "Kilograms" && c6i == "Pounds") {
+            cres.setText(QString::number(convc.text().toDouble() * 2.20462262188));
+        } else if (c5i == "Grams" && c6i == "Kilograms") {
+            cres.setText(QString::number(convc.text().toDouble() / 1000));
+        } else if (c5i == "Grams" && c6i == "Pounds") {
+            cres.setText(QString::number(convc.text().toDouble() * 0.00220462262188));
+        } else if (c5i == "Pounds" && c6i == "Kilograms") {
+            cres.setText(QString::number(convc.text().toDouble() * 0.45359237));
+        } else if (c5i == "Pounds" && c6i == "Grams") {
+            cres.setText(QString::number(convc.text().toDouble() * 453.59237));
         }
     });
 
@@ -703,6 +765,11 @@ int main(int argc, char *argv[]) {
     convLayout.addWidget(&c4, 3, 0);
     convLayout.addWidget(&bres, 3, 1);
     convLayout.addWidget(&convert2, 2, 2);
+    convLayout.addWidget(&c5, 4, 0);
+    convLayout.addWidget(&convc, 4, 1);
+    convLayout.addWidget(&c6, 5, 0);
+    convLayout.addWidget(&cres, 5, 1);
+    convLayout.addWidget(&convert3, 4, 2);
     convLayout.setAlignment(Qt::AlignTop);
     probLayout.addWidget(&cftext, 0, 0, 1, 2);
     probLayout.addWidget(&cflip, 1, 0);
@@ -733,7 +800,7 @@ int main(int argc, char *argv[]) {
     };
 
     QLabel* convLbl[] = {
-        &ares, &bres
+        &ares, &bres, &cres
     };
 
     for (QLabel* label : memLbl) {
