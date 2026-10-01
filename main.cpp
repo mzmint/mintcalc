@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
     QString c4i = "Meters";
     QString c5i = "Kilograms";
     QString c6i = "Kilograms";
+    int htotal = 0;
+    int ttotal = 0;
 
     QApplication app(argc, argv);
 
@@ -697,10 +699,16 @@ int main(int argc, char *argv[]) {
     });
 
     QLabel cftext;
-    cftext.setText("Coin Flip");
+    cftext.setText("Coin Flip  ==================================================");
 
     QLabel cfr;
     cfr.setText("Flip a coin");
+
+    QLabel cfht;
+    cfht.setText("Heads:");
+
+    QLabel cftt;
+    cftt.setText("Tails:");
 
     QPushButton cflip;
     cflip.setText("Flip");
@@ -709,8 +717,12 @@ int main(int argc, char *argv[]) {
         std::cout << rnum;
         if (rnum == 0) {
             cfr.setText("Heads!");
+            htotal++;
+            cfht.setText("Heads: " + QString::number(htotal));
         } else {
             cfr.setText("Tails!");
+            ttotal++;
+            cftt.setText("Tails: " + QString::number(ttotal));
         }
     });
 
@@ -774,6 +786,8 @@ int main(int argc, char *argv[]) {
     probLayout.addWidget(&cftext, 0, 0, 1, 2);
     probLayout.addWidget(&cflip, 1, 0);
     probLayout.addWidget(&cfr, 1, 1);
+    probLayout.addWidget(&cfht, 2, 0);
+    probLayout.addWidget(&cftt, 2, 1);
     probLayout.setAlignment(Qt::AlignTop);
     tabs.addTab(&calcTab, "Calculator");
     tabs.addTab(&memTab, "Memory");
