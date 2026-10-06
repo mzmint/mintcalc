@@ -6,7 +6,6 @@ cmake-build-*/
 build/
 
 # Compiled files
-*.exe
 *.dll
 *.obj
 *.o
@@ -21,3 +20,7 @@ Makefile
 # Qt generated files
 *.moc
 *.qmlc
+
+
+#stuff
+*.iss
