@@ -1,5 +1,6 @@
 # CLion
 .idea/
+.build/
 
 # CMake build directories
 cmake-build-*/

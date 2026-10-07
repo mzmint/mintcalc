@@ -562,6 +562,14 @@ int main(int argc, char *argv[]) {
         c2i = c2.itemText(index);
     });
 
+    QPushButton swap1;
+    swap1.setText("Swap");
+    QObject::connect(&swap1, &QPushButton::clicked, [&]() {
+        int temp = c1.currentIndex();
+        c1.setCurrentIndex(c2.currentIndex());
+        c2.setCurrentIndex(temp);
+    });
+
     QPushButton convert1;
     convert1.setText("Convert");
     QObject::connect(&convert1, &QPushButton::clicked, [&]() {
@@ -608,6 +616,14 @@ int main(int argc, char *argv[]) {
         c4i = c4.itemText(index);
     });
 
+    QPushButton swap2;
+    swap2.setText("Swap");
+    QObject::connect(&swap2, &QPushButton::clicked, [&]() {
+        int temp = c3.currentIndex();
+        c3.setCurrentIndex(c4.currentIndex());
+        c4.setCurrentIndex(temp);
+    });
+
     QPushButton convert2;
     convert2.setText("Convert");
     QObject::connect(&convert2, &QPushButton::clicked, [&]() {
@@ -621,6 +637,8 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 100));
         } else if (c3i == "Meters" && c4i == "Kilometers") {
             bres.setText(QString::number(convb.text().toDouble() / 1000));
+        } else if (c3i == "Meters" && c4i == "Miles") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.000621371));
         } else if (c3i == "Centimeters" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() * 0.0328084));
         } else if (c3i == "Centimeters" && c4i == "Inches") {
@@ -629,6 +647,8 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 0.01));
         } else if (c3i == "Centimeters" && c4i == "Kilometers") {
             bres.setText(QString::number(convb.text().toDouble() / 100000));
+        } else if (c3i == "Centimeters" && c4i == "Miles") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0000062137));
         } else if (c3i == "Feet" && c4i == "Meters") {
             bres.setText(QString::number(convb.text().toDouble() / 3.28084));
         } else if (c3i == "Feet" && c4i == "Inches") {
@@ -637,6 +657,8 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 30.48));
         } else if (c3i == "Feet" && c4i == "Kilometers") {
             bres.setText(QString::number(convb.text().toDouble() / 3280.84));
+        } else if (c3i == "Feet" && c4i == "Miles") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0001893939));
         } else if (c3i == "Inches" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() / 12));
         } else if (c3i == "Inches" && c4i == "Centimeters") {
@@ -645,6 +667,8 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 0.0254));
         } else if (c3i == "Inches" && c4i == "Kilometers") {
             bres.setText(QString::number(convb.text().toDouble() * 0.0000254));
+        } else if (c3i == "Inches" && c4i == "Miles") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.0000157828));
         } else if (c3i == "Kilometers" && c4i == "Feet") {
             bres.setText(QString::number(convb.text().toDouble() * 3280.84));
         } else if (c3i == "Kilometers" && c4i == "Centimeters") {
@@ -653,6 +677,18 @@ int main(int argc, char *argv[]) {
             bres.setText(QString::number(convb.text().toDouble() * 1000));
         } else if (c3i == "Kilometers" && c4i == "Inches") {
             bres.setText(QString::number(convb.text().toDouble() * 39370.1));
+        } else if (c3i == "Kilometers" && c4i == "Miles") {
+            bres.setText(QString::number(convb.text().toDouble() * 0.621371));
+        } else if (c3i == "Miles" && c4i == "Feet") {
+            bres.setText(QString::number(convb.text().toDouble() * 5279.9870456));
+        } else if (c3i == "Miles" && c4i == "Centimeters") {
+            bres.setText(QString::number(convb.text().toDouble() * 160934));
+        } else if (c3i == "Miles" && c4i == "Meters") {
+            bres.setText(QString::number(convb.text().toDouble() * 1609.34));
+        } else if (c3i == "Miles" && c4i == "Inches") {
+            bres.setText(QString::number(convb.text().toDouble() * 63359.876734));
+        } else if (c3i == "Miles" && c4i == "Kilometers") {
+            bres.setText(QString::number(convb.text().toDouble() * 1.60934));
         }
     });
 
@@ -666,6 +702,7 @@ int main(int argc, char *argv[]) {
     c5.addItem("Kilograms");
     c5.addItem("Grams");
     c5.addItem("Pounds");
+    c5.addItem("Ounces");
     QObject::connect(&c5, &QComboBox::currentIndexChanged, [&](int index) {
         c5i = c5.itemText(index);
     });
@@ -674,8 +711,17 @@ int main(int argc, char *argv[]) {
     c6.addItem("Kilograms");
     c6.addItem("Grams");
     c6.addItem("Pounds");
+    c6.addItem("Ounces");
     QObject::connect(&c6, &QComboBox::currentIndexChanged, [&](int index) {
         c6i = c6.itemText(index);
+    });
+
+    QPushButton swap3;
+    swap3.setText("Swap");
+    QObject::connect(&swap3, &QPushButton::clicked, [&]() {
+        int temp = c5.currentIndex();
+        c5.setCurrentIndex(c6.currentIndex());
+        c6.setCurrentIndex(temp);
     });
 
     QPushButton convert3;
@@ -687,14 +733,26 @@ int main(int argc, char *argv[]) {
             cres.setText(QString::number(convc.text().toDouble() * 1000));
         } else if (c5i == "Kilograms" && c6i == "Pounds") {
             cres.setText(QString::number(convc.text().toDouble() * 2.20462262188));
+        } else if (c5i == "Kilograms" && c6i == "Ounces") {
+            cres.setText(QString::number(convc.text().toDouble() * 35.274));
         } else if (c5i == "Grams" && c6i == "Kilograms") {
             cres.setText(QString::number(convc.text().toDouble() / 1000));
         } else if (c5i == "Grams" && c6i == "Pounds") {
             cres.setText(QString::number(convc.text().toDouble() * 0.00220462262188));
+        } else if (c5i == "Grams" && c6i == "Ounces") {
+            cres.setText(QString::number(convc.text().toDouble() * 0.035274));
         } else if (c5i == "Pounds" && c6i == "Kilograms") {
             cres.setText(QString::number(convc.text().toDouble() * 0.45359237));
         } else if (c5i == "Pounds" && c6i == "Grams") {
             cres.setText(QString::number(convc.text().toDouble() * 453.59237));
+        } else if (c5i == "Pounds" && c6i == "Ounces") {
+            cres.setText(QString::number(convc.text().toDouble() * 16));
+        } else if (c5i == "Ounces" && c6i == "Kilograms") {
+            cres.setText(QString::number(convc.text().toDouble() * 0.0283495));
+        } else if (c5i == "Ounces" && c6i == "Grams") {
+            cres.setText(QString::number(convc.text().toDouble() * 28.3495));
+        } else if (c5i == "Ounces" && c6i == "Pounds") {
+            cres.setText(QString::number(convc.text().toDouble() * 0.0624998747));
         }
     });
 
@@ -769,19 +827,22 @@ int main(int argc, char *argv[]) {
     memLayout.addStretch();
     convLayout.addWidget(&c1, 0, 0);
     convLayout.addWidget(&conva, 0, 1);
+    convLayout.addWidget(&convert1, 0, 2);
     convLayout.addWidget(&c2, 1, 0);
     convLayout.addWidget(&ares, 1, 1);
-    convLayout.addWidget(&convert1, 0, 2);
+    convLayout.addWidget(&swap1, 1, 2);
     convLayout.addWidget(&c3, 2, 0);
     convLayout.addWidget(&convb, 2, 1);
+    convLayout.addWidget(&convert2, 2, 2);
     convLayout.addWidget(&c4, 3, 0);
     convLayout.addWidget(&bres, 3, 1);
-    convLayout.addWidget(&convert2, 2, 2);
+    convLayout.addWidget(&swap2, 3, 2);
     convLayout.addWidget(&c5, 4, 0);
     convLayout.addWidget(&convc, 4, 1);
+    convLayout.addWidget(&convert3, 4, 2);
     convLayout.addWidget(&c6, 5, 0);
     convLayout.addWidget(&cres, 5, 1);
-    convLayout.addWidget(&convert3, 4, 2);
+    convLayout.addWidget(&swap3, 5, 2);
     convLayout.setAlignment(Qt::AlignTop);
     probLayout.addWidget(&cftext, 0, 0, 1, 2);
     probLayout.addWidget(&cflip, 1, 0);
