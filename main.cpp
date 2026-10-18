@@ -65,10 +65,8 @@ int main(int argc, char *argv[]) {
     screen.setStyleSheet("font-size: 24px;");
     screen.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    auto setop = [&](int newOp)
-    {
-        if (op != 0)
-        {
+    auto setop = [&](int newOp) {
+        if (op != 0) {
             double current = screen.text().toDouble();
 
             if (op == 1)
@@ -85,11 +83,24 @@ int main(int argc, char *argv[]) {
             }
             else if (op == 5)
                 num = std::pow(num, current);
+            else if (op == 6)
+                num = std::pow(num, 1 / current);
+            else if (op == 7) {
+                int intnum = static_cast<int>(num);
+                int intcurr = static_cast<int>(current);
 
-            screen.setText(QString::number(num));
+                if (intcurr != 0) {
+                    intnum %= intcurr;
+                    num = intnum;
+                } else {
+                    screen.setText("Cannot Modulo By 0");
+                }
+            }
+            else if (op == 8)
+                num = num * std::pow(10, current);
+            if (op != 7) screen.setText(QString::number(num));
         }
-        else
-        {
+        else {
             num = screen.text().toDouble();
         }
 
@@ -118,7 +129,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton zero;
     zero.setText("0");
-    zero.setFixedHeight(110);
+    zero.setFixedHeight(86);
     QObject::connect(&zero, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("0");
@@ -129,7 +140,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton dot;
     dot.setText(".");
-    dot.setFixedSize(110, 110);
+    dot.setFixedSize(86, 86);
     QObject::connect(&dot, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("0.");
@@ -140,7 +151,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton equals;
     equals.setText("=");
-    equals.setFixedSize(110, 110);
+    equals.setFixedSize(86, 86);
     QObject::connect(&equals, &QPushButton::clicked, [&]() {
         if (op != 0) {
             if (op == 1) {
@@ -159,7 +170,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton one;
     one.setText("1");
-    one.setFixedSize(110, 110);
+    one.setFixedSize(86, 86);
     QObject::connect(&one, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("1");
@@ -170,7 +181,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton two;
     two.setText("2");
-    two.setFixedSize(110, 110);
+    two.setFixedSize(86, 86);
     QObject::connect(&two, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("2");
@@ -181,7 +192,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton three;
     three.setText("3");
-    three.setFixedSize(110, 110);
+    three.setFixedSize(86, 86);
     QObject::connect(&three, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
             screen.setText("3");
@@ -192,41 +203,41 @@ int main(int argc, char *argv[]) {
 
     QPushButton plus;
     plus.setText("+");
-    plus.setFixedSize(110, 110);
+    plus.setFixedSize(86, 86);
     QObject::connect(&plus, &QPushButton::clicked, [&]() {
         setop(1);
     });
 
     QPushButton four;
     four.setText("4");
-    four.setFixedSize(110, 110);
+    four.setFixedSize(86, 86);
 
     QPushButton five;
     five.setText("5");
-    five.setFixedSize(110, 110);
+    five.setFixedSize(86, 86);
 
     QPushButton six;
     six.setText("6");
-    six.setFixedSize(110, 110);
+    six.setFixedSize(86, 86);
 
     QPushButton minus;
     minus.setText("-");
-    minus.setFixedSize(110, 110);
+    minus.setFixedSize(86, 86);
     QObject::connect(&minus, &QPushButton::clicked, [&]() {
         setop(2);
     });
 
     QPushButton seven;
     seven.setText("7");
-    seven.setFixedSize(110, 110);
+    seven.setFixedSize(86, 86);
 
     QPushButton eight;
     eight.setText("8");
-    eight.setFixedSize(110, 110);
+    eight.setFixedSize(86, 86);
 
     QPushButton nine;
     nine.setText("9");
-    nine.setFixedSize(110, 110);
+    nine.setFixedSize(86, 86);
 
     QObject::connect(&seven, &QPushButton::clicked, [&]() {
 
@@ -412,89 +423,162 @@ int main(int argc, char *argv[]) {
 
     QPushButton times;
     times.setText("*");
-    times.setFixedSize(110, 110);
+    times.setFixedSize(86, 86);
     QObject::connect(&times, &QPushButton::clicked, [&]() {
         setop(3);
     });
 
     QPushButton pi;
     pi.setText("π");
-    pi.setFixedSize(110, 110);
+    pi.setFixedSize(86, 86);
     QObject::connect(&pi, &QPushButton::clicked, [&]() {
         if (screen.text() == "0") {
-            screen.setText("3.141592653");
+            screen.setText(QString::number(std::numbers::pi));
         } else {
             screen.setText(QString::number(screen.text().toDouble() * std::numbers::pi));
         }
+    });
 
+    QPushButton e;
+    e.setText("e");
+    e.setFixedSize(86, 86);
+    QObject::connect(&e, &QPushButton::clicked, [&]() {
+        if (screen.text() == "0") {
+            screen.setText(QString::number(std::numbers::e));
+        } else {
+            screen.setText(QString::number(screen.text().toDouble() * std::numbers::e));
+        }
     });
 
     QPushButton recip;
     recip.setText("1/x");
-    recip.setFixedSize(110, 110);
+    recip.setFixedSize(86, 86);
     QObject::connect(&recip, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(1.0 / screen.text().toDouble()));
     });
 
     QPushButton fact;
     fact.setText("!");
-    fact.setFixedSize(110, 110);
+    fact.setFixedSize(86, 86);
     QObject::connect(&fact, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(factorial(screen.text().toDouble())));
     });
 
     QPushButton divide;
     divide.setText("/");
-    divide.setFixedSize(110, 110);
+    divide.setFixedSize(86, 86);
     QObject::connect(&divide, &QPushButton::clicked, [&]() {
         setop(4);
     });
 
     QPushButton sqrt;
     sqrt.setText("√");
-    sqrt.setFixedSize(110, 110);
+    sqrt.setFixedSize(86, 86);
     QObject::connect(&sqrt, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(std::sqrt(screen.text().toDouble())));
     });
 
+    QPushButton mod;
+    mod.setText("mod");
+    mod.setFixedSize(86, 86);
+    QObject::connect(&mod, &QPushButton::clicked, [&]() {
+        setop(7);
+    });
+
+    QPushButton x10y;
+    x10y.setText("*10^y");
+    x10y.setFixedSize(86, 86);
+    QObject::connect(&x10y, &QPushButton::clicked, [&]() {
+        setop(8);
+    });
+
+    QPushButton yrootx;
+    yrootx.setText("y√x");
+    yrootx.setFixedSize(86, 86);
+    QObject::connect(&sqrt, &QPushButton::clicked, [&]() {
+        setop(6);
+    });
+
     QPushButton square;
     square.setText("x²");
-    square.setFixedSize(110, 110);
+    square.setFixedSize(86, 86);
     QObject::connect(&square, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(screen.text().toDouble() * screen.text().toDouble()));
     });
 
+    QPushButton sin;
+    sin.setText("sin(x)");
+    sin.setFixedSize(86, 86);
+    QObject::connect(&sin, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::sin(screen.text().toDouble())));
+    });
+
+    QPushButton cos;
+    cos.setText("cos(x)");
+    cos.setFixedSize(86, 86);
+    QObject::connect(&cos, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::cos(screen.text().toDouble())));
+    });
+
+    QPushButton tan;
+    tan.setText("tan(x)");
+    tan.setFixedSize(86, 86);
+    QObject::connect(&tan, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::tan(screen.text().toDouble())));
+    });
+
+    QPushButton asin;
+    asin.setText("asin(x)");
+    asin.setFixedSize(86, 86);
+    QObject::connect(&sin, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::asin(screen.text().toDouble())));
+    });
+
+    QPushButton acos;
+    acos.setText("acos(x)");
+    acos.setFixedSize(86, 86);
+    QObject::connect(&acos, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::acos(screen.text().toDouble())));
+    });
+
+    QPushButton atan;
+    atan.setText("atan(x)");
+    atan.setFixedSize(86, 86);
+    QObject::connect(&atan, &QPushButton::clicked, [&]() {
+        screen.setText(QString::number(std::atan(screen.text().toDouble())));
+    });
+
     QPushButton exp;
     exp.setText("x^y");
-    exp.setFixedSize(110, 110);
+    exp.setFixedSize(86, 86);
     QObject::connect(&exp, &QPushButton::clicked, [&]() {
         setop(5);
     });
 
     QPushButton delall;
     delall.setText("AC");
-    delall.setFixedSize(110, 110);
+    delall.setFixedSize(86, 86);
     QObject::connect(&delall, &QPushButton::clicked, [&]() {
         screen.setText("0");
     });
 
     QPushButton log10;
     log10.setText("log(x)");
-    log10.setFixedSize(110, 110);
+    log10.setFixedSize(86, 86);
     QObject::connect(&log10, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(std::log10(screen.text().toDouble())));
     });
 
     QPushButton ln;
     ln.setText("ln(x)");
-    ln.setFixedSize(110, 110);
+    ln.setFixedSize(86, 86);
     QObject::connect(&ln, &QPushButton::clicked, [&]() {
         screen.setText(QString::number(std::log(screen.text().toDouble())));
     });
 
     QPushButton sto;
     sto.setText("->");
-    sto.setFixedSize(110, 110);
+    sto.setFixedSize(86, 86);
     QObject::connect(&sto, &QPushButton::clicked, [&]() {
         if (issto == false) {
             seven.setText("A");
@@ -518,7 +602,7 @@ int main(int argc, char *argv[]) {
 
     QPushButton var;
     var.setText("var");
-    var.setFixedSize(110, 110);
+    var.setFixedSize(86, 86);
     QObject::connect(&var, &QPushButton::clicked, [&]() {
         if (isvar == false) {
             seven.setText("A");
@@ -538,6 +622,21 @@ int main(int argc, char *argv[]) {
             isvar = !isvar;
         }
         issto = false;
+    });
+
+    QPushButton del;
+    del.setText("<x");
+    del.setFixedSize(86, 86);
+    QObject::connect(&del, &QPushButton::clicked, [&]() {
+        QString text = screen.text();
+        if (!text.isEmpty()) {
+            text.chop(1);
+        }
+        if (text.isEmpty() || text == "-") {
+            text = "0";
+        }
+
+        screen.setText(text);
     });
 
     QLineEdit conva;
@@ -790,34 +889,45 @@ int main(int argc, char *argv[]) {
     QGridLayout probLayout(&probTab);
     memLayout.setSpacing(2);
     memLayout.setContentsMargins(5, 5, 5, 5);
-    calcLayout.addWidget(&zero, 7, 1, 1, 2);
-    calcLayout.addWidget(&dot, 7, 3, 1, 1);
-    calcLayout.addWidget(&equals, 7, 4, 1, 1);
-    calcLayout.addWidget(&one, 6, 1, 1, 1);
-    calcLayout.addWidget(&two, 6, 2, 1, 1);
-    calcLayout.addWidget(&three, 6, 3, 1, 1);
-    calcLayout.addWidget(&plus, 6, 4, 1, 1);
-    calcLayout.addWidget(&four, 5, 1, 1, 1);
-    calcLayout.addWidget(&five, 5, 2, 1, 1);
-    calcLayout.addWidget(&six, 5, 3, 1, 1);
-    calcLayout.addWidget(&minus, 5, 4, 1, 1);
-    calcLayout.addWidget(&seven, 4, 1, 1, 1);
-    calcLayout.addWidget(&eight, 4, 2, 1, 1);
-    calcLayout.addWidget(&nine, 4, 3, 1, 1);
-    calcLayout.addWidget(&times, 4, 4, 1, 1);
-    calcLayout.addWidget(&pi, 3, 1, 1, 1);
-    calcLayout.addWidget(&recip, 3, 2, 1, 1);
-    calcLayout.addWidget(&fact, 3, 3, 1, 1);
-    calcLayout.addWidget(&divide, 3, 4, 1, 1);
-    calcLayout.addWidget(&sqrt, 2, 1, 1, 1);
-    calcLayout.addWidget(&square, 2, 2, 1, 1);
+    calcLayout.addWidget(&zero, 8, 1, 1, 2);
+    calcLayout.addWidget(&dot, 8, 3, 1, 1);
+    calcLayout.addWidget(&equals, 8, 4, 1, 1);
+    calcLayout.addWidget(&one, 7, 1, 1, 1);
+    calcLayout.addWidget(&two, 7, 2, 1, 1);
+    calcLayout.addWidget(&three, 7, 3, 1, 1);
+    calcLayout.addWidget(&plus, 7, 4, 1, 1);
+    calcLayout.addWidget(&four, 6, 1, 1, 1);
+    calcLayout.addWidget(&five, 6, 2, 1, 1);
+    calcLayout.addWidget(&six, 6, 3, 1, 1);
+    calcLayout.addWidget(&minus, 6, 4, 1, 1);
+    calcLayout.addWidget(&seven, 5, 1, 1, 1);
+    calcLayout.addWidget(&eight, 5, 2, 1, 1);
+    calcLayout.addWidget(&nine, 5, 3, 1, 1);
+    calcLayout.addWidget(&times, 5, 4, 1, 1);
+    calcLayout.addWidget(&pi, 7, 0, 1, 1);
+    calcLayout.addWidget(&recip, 4, 0, 1, 1);
+    calcLayout.addWidget(&x10y, 2, 2, 1, 1);
+    calcLayout.addWidget(&sin, 4, 1, 1, 1);
+    calcLayout.addWidget(&cos, 4, 2, 1, 1);
+    calcLayout.addWidget(&tan, 4, 3, 1, 1);
+    calcLayout.addWidget(&asin, 3, 1, 1, 1);
+    calcLayout.addWidget(&acos, 3, 2, 1, 1);
+    calcLayout.addWidget(&atan, 3, 3, 1, 1);
+    calcLayout.addWidget(&fact, 3, 0, 1, 1);
+    calcLayout.addWidget(&mod, 2, 1, 1, 1);
+    calcLayout.addWidget(&divide, 4, 4, 1, 1);
+    calcLayout.addWidget(&sqrt, 1, 2, 1, 1);
+    calcLayout.addWidget(&yrootx, 2, 0, 1, 1);
+    calcLayout.addWidget(&square, 1, 1, 1, 1);
     calcLayout.addWidget(&exp, 2, 3, 1, 1);
     calcLayout.addWidget(&delall, 2, 4, 1, 1);
-    calcLayout.addWidget(&log10, 1, 1, 1, 1);
-    calcLayout.addWidget(&ln, 1, 2, 1, 1);
-    calcLayout.addWidget(&sto, 1, 3, 1, 1);
-    calcLayout.addWidget(&var, 1, 4, 1, 1);
-    calcLayout.addWidget(&screen, 0, 1, 1, 4);
+    calcLayout.addWidget(&log10, 5, 0, 1, 1);
+    calcLayout.addWidget(&ln, 6, 0, 1, 1);
+    calcLayout.addWidget(&sto, 1, 0, 1, 1);
+    calcLayout.addWidget(&var, 1, 3, 1, 1);
+    calcLayout.addWidget(&del, 3, 4, 1, 1);
+    calcLayout.addWidget(&e, 8, 0, 1, 1);
+    calcLayout.addWidget(&screen, 0, 0, 1, 5);
     memLayout.addWidget(&albl);
     memLayout.addWidget(&blbl);
     memLayout.addWidget(&clbl);
@@ -863,11 +973,13 @@ int main(int argc, char *argv[]) {
         &zero, &one, &two, &three, &four, &five,
         &six, &seven, &eight, &nine, &dot, &pi,
         &recip, &fact, &sqrt, &square, &exp,
-        &log10, &ln, &sto, &var
+        &log10, &ln, &sto, &var, &sin, &cos,
+        &tan, &asin, &acos, &atan, &mod, &yrootx,
+        &x10y, &e
     };
 
     QPushButton* opButtons[] = {
-        &delall, &divide, &times, &plus, &minus
+        &delall, &divide, &times, &plus, &minus, &del
     };
 
     QLabel* memLbl[] = {
@@ -891,8 +1003,8 @@ int main(int argc, char *argv[]) {
             "QPushButton {"
             "    background-color: #363636;"
             "    color: white;"
-            "    font-size: 24px;"
-            "    border-radius: 55px;"
+            "    font-size: 20px;"
+            "    border-radius: 43px;"
             "}"
             "QPushButton:hover {"
             "    background-color: #4a4a4a;"
@@ -908,8 +1020,8 @@ int main(int argc, char *argv[]) {
             "QPushButton {"
             "    background-color: #00afff;"
             "    color: black;"
-            "    font-size: 24px;"
-            "    border-radius: 55px;"
+            "    font-size: 20px;"
+            "    border-radius: 43px;"
             "}"
             "QPushButton:hover {"
             "    background-color: #33bfff;"
@@ -927,8 +1039,8 @@ int main(int argc, char *argv[]) {
         "#equalsButton {"
         "    background-color: #00e5bb;"
         "    color: black;"
-        "    font-size: 24px;"
-        "    border-radius: 55px;"
+        "    font-size: 20px;"
+        "    border-radius: 43px;"
         "}"
         "#equalsButton:hover {"
         "    background-color: #33eac7;"
