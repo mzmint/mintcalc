@@ -14,8 +14,15 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
-int factorial(double n) {
+inline int random(int a, int b) {
+    static std::mt19937 gen{std::random_device{}()};
+    std::uniform_int_distribution<int> dist(a, b);
+    return dist(gen);
+}
+
+static int factorial(double n) {
     int ans = 1;
     for (int i = 2; i <= n; i++) {
         ans = ans * i;
@@ -24,7 +31,6 @@ int factorial(double n) {
 }
 
 int main(int argc, char *argv[]) {
-    std::srand(std::time(nullptr));
 
     double num;
     int op = 0;
@@ -42,6 +48,7 @@ int main(int argc, char *argv[]) {
     QString c4i = "Meters";
     QString c5i = "Kilograms";
     QString c6i = "Kilograms";
+    QString pci = "Combinations";
     int htotal = 0;
     int ttotal = 0;
 
@@ -870,8 +877,7 @@ int main(int argc, char *argv[]) {
     QPushButton cflip;
     cflip.setText("Flip");
     QObject::connect(&cflip, &QPushButton::clicked, [&]() {
-        int rnum = std::rand() % 2;
-        std::cout << rnum;
+        int rnum = random(0, 1);
         if (rnum == 0) {
             cfr.setText("Heads!");
             htotal++;
@@ -881,6 +887,59 @@ int main(int argc, char *argv[]) {
             ttotal++;
             cftt.setText("Tails: " + QString::number(ttotal));
         }
+    });
+
+    QLabel dtext;
+    dtext.setText("Roll Dice  ==================================================");
+
+    QLabel dr;
+    dr.setText("Roll a Dice");
+
+    QLabel dv;
+    dv.setText("Rolled:");
+
+    QPushButton rolld;
+    rolld.setText("Roll");
+    QObject::connect(&rolld, &QPushButton::clicked, [&]() {
+        int rnum = random(1, 6);
+        dv.setText("Rolled: " + QString::number(rnum));
+    });
+
+    QLabel pctext;
+    pctext.setText("Combinations and Permutations   ==================================");
+
+    QComboBox pvc;
+    pvc.addItem("Combinations");
+    pvc.addItem("Permutations");
+
+    QObject::connect(&pvc, &QComboBox::currentIndexChanged,
+        [&](int index) {
+            pci = pvc.itemText(index);
+        });
+
+    QLabel pcres;
+    pcres.setText(" ");
+
+    QLineEdit pcn;
+    pcn.setPlaceholderText("n:");
+
+    QLineEdit pcr;
+    pcr.setPlaceholderText("r:");
+
+    QPushButton pcc;
+    pcc.setText("Calculate");
+
+    QObject::connect(&pcc, &QPushButton::clicked, [&]() {
+        int n = pcn.text().toDouble();
+        int r = pcr.text().toDouble();
+        if (n < 0 || r < 0 || r > n) {
+            pcres.setText("Invalid values");
+            return;
+        }
+        long long result;
+        if (pci == "Combinations") result = factorial(n) / (factorial(r) * factorial(n - r));
+        else result = factorial(n) / factorial(n - r);
+        pcres.setText(QString::number(result));
     });
 
     QGridLayout calcLayout(&calcTab);
@@ -959,6 +1018,16 @@ int main(int argc, char *argv[]) {
     probLayout.addWidget(&cfr, 1, 1);
     probLayout.addWidget(&cfht, 2, 0);
     probLayout.addWidget(&cftt, 2, 1);
+    probLayout.addWidget(&dtext, 3, 0, 1, 2);
+    probLayout.addWidget(&rolld, 4, 0);
+    probLayout.addWidget(&dr, 4, 1);
+    probLayout.addWidget(&dv, 5, 0);
+    probLayout.addWidget(&pctext, 6, 0, 1, 2);
+    probLayout.addWidget(&pvc, 7, 0);
+    probLayout.addWidget(&pcres, 7, 1);
+    probLayout.addWidget(&pcn, 8, 0);
+    probLayout.addWidget(&pcr, 8, 1);
+    probLayout.addWidget(&pcc,9, 0, 1, 2);
     probLayout.setAlignment(Qt::AlignTop);
     tabs.addTab(&calcTab, "Calculator");
     tabs.addTab(&memTab, "Memory");
